@@ -1,0 +1,41 @@
+#:kivy 2.0.0
+
+
+<SettingPanel>:
+    canvas.before:
+        Color:
+            rgba: 0.258, 0.258, 0.258, 1.0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    rows: 2
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_x: 0.5
+        spacing: 10
+        padding: 20
+        GridLayout:
+            cols: 2
+            Switch:
+                active: False
+                on_active: root.left_switch_change(self.active)
+            Label:
+                text: 'Left Camera'
+        GridLayout:
+            cols: 2
+            Switch:
+                active: False
+                on_active: root.right_switch_change(self.active)
+            Label:
+                text: 'Right Camera'
+        GridLayout:
+            cols: 2
+            Switch:
+                active: False
+                on_active: root.rgb_switch_change(self.active)
+            Label:
+                text: 'RGB Camera'
+        Label:
+            text: 'TEST'
+    Widget: # place holder
+        size_hint_y: 0.5

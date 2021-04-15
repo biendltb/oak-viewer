@@ -1,0 +1,45 @@
+#:kivy 2.0.0
+
+<ContentPanel>:
+    rows: 3
+    canvas.before:
+        Color:
+            rgba: 0, 1, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
+        cols: 2
+        size_hint_x: None
+        width: root.width
+        canvas.before:
+            Color:
+                rgba: 0, 0, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        GridLayout:
+            cols: 1
+            Image:
+                id: im_left
+                source: '/home/biendltb/Projects/navigation/dynim-image-acquisition-tool/src_gui/client/gui/ims/spark_bg.png'
+                size: self.size
+        GridLayout:
+            cols: 1
+            Image:
+                id: im_right
+                source: '/home/biendltb/Projects/navigation/dynim-image-acquisition-tool/src_gui/client/gui/ims/spark_bg.png'
+                size: self.size
+    Widget: # place holder
+    GridLayout:
+        rows: 1
+        canvas.before:
+            Color:
+                rgba: 1, 0, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Image:
+            id: im_rgb
+            source: '/home/biendltb/Projects/navigation/dynim-image-acquisition-tool/src_gui/client/gui/ims/spark_bg.png'
+            size: self.size

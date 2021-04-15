@@ -1,0 +1,31 @@
+#:kivy 2.0.0
+
+#:include gui/setting_panel.kv
+#:include gui/content_panel.kv
+#:include gui/status_bar.kv
+
+
+<OakViewer>:
+    setting_panel: setting_panel
+    content_panel: content_panel
+    status_bar: status_bar
+    GridLayout:
+        rows: 1
+        size: root.width, root.height
+        size_hint_min_x: 1000
+        GridLayout:
+            rows: 2
+            GridLayout:
+                cols: 2
+                SettingPanel:
+                    id: setting_panel
+                    size_y: root.height
+                    size_hint_x: 0.3
+                    size_hint_min_x: 300
+                    size_hint_max_x: 400
+                ContentPanel:
+                    id: content_panel
+                    size_hint_x: 0.7
+            StatusBar:
+                id: status_bar
+                size_hint_max_y: 30
