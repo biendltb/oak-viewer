@@ -1,0 +1,28 @@
+version: 1
+
+formatters:
+  simple:
+    format: "[%(asctime)s][%(levelname)s] %(message)s"
+  precise:
+    format: "[%(filename)s:%(lineno)s - %(funcName)20s()][%(asctime)s][%(levelname)s] %(message)s"
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: precise
+    filename: oakcam.log
+    maxBytes: 1024000
+    backupCount: 3
+loggers:
+  spark_logging:
+    level: DEBUG
+    handlers: [ console, file ]
+    propagate: no
+root:
+  level: DEBUG
+  handlers: [ console, file ]

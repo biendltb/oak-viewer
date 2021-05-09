@@ -1,0 +1,36 @@
+
+
+<OpenFileDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: 'vertical'
+        FileChooserListView:
+            id: filechooser
+            #path: root.last_dir
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: root.cancel_btn_text
+                on_release: root.cancel()
+            Button:
+                text: root.ok_btn_text
+                # function load will be assign when popup object created
+                on_release: root.select(filechooser.path, filechooser.selection)
+
+
+<Notification@Popup>:
+    display_text: ''
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.display_text
+            markup: True
+        FlatButton:
+            size_hint_y: None
+            height: 50
+            text: 'OK'
+            on_release: root.dismiss()

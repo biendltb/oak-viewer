@@ -1,0 +1,160 @@
+#:kivy 2.0.0
+
+#:include gui/dialogs.kv
+
+
+<RecordingScreen@GridLayout>:
+    rows: 4
+    padding: 20
+    # create a stronger reference to keep the dropdown from being garbage collected
+    cam_type_dropdown: cam_type_dropdown.__self__
+    GridLayout:
+        rows: 1
+        size_hint_y: 0.05
+        AnchorLayout:
+            size_hint_x: None
+            width: 30
+            anchor_x: 'left'
+            anchor_y: 'top'
+            Button:
+                id: back_btn
+                on_press: root.back_btn_press()
+                background_color: 0., 0., 0., 0.
+            Image:
+                size_hint_x: None
+                width: 20
+                source: 'gui/ims/outline_arrow_back_ios_white_24dp.png'
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 0.3
+        spacing: 10
+        padding: 20
+        GridLayout:
+            rows: 1
+            GridLayout:
+                rows: 2
+                # Camera selection
+                GridLayout:
+                    rows: 2
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        FlatButton:
+                            id: camera_type_btn
+                            text: 'LEFT camera'
+                            size_hint_y: None
+                            height: 50
+                            on_parent: cam_type_dropdown.dismiss()
+                            on_release: cam_type_dropdown.open(self)
+                    DropDown:
+                        id: cam_type_dropdown
+                        on_select: camera_type_btn.text = '{}'.format(args[1])
+                        FlatButton:
+                            text: 'LEFT camera'
+                            size_hint_y: None
+                            height: 35
+                            background_color: .5, .5, .5, 1.0
+                            on_release: cam_type_dropdown.select(self.text)
+                        FlatButton:
+                            text: 'RIGHT camera'
+                            size_hint_y: None
+                            height: 35
+                            background_color: .5, .5, .5, 1.0
+                            on_release: cam_type_dropdown.select(self.text)
+                        FlatButton:
+                            text: 'RGB camera'
+                            size_hint_y: None
+                            height: 35
+                            background_color: .5, .5, .5, 1.0
+                            on_release: cam_type_dropdown.select(self.text)
+
+        # Saving directory
+        GridLayout:
+            rows: 1
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: 40
+                spacing: 10
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 0.9
+                    TextInput:
+                        padding: 10
+                        id: saving_dir_textbox
+                        hint_text: "Saving directory"
+                        multiline: False
+                        disabled: True
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 0.1
+                    Button:
+                        on_press: root.saving_dir_btn_press()
+                        background_color: 0., 0., 0., 0.
+                        Image:
+                            size_hint_x: None
+                            width: 30
+                            source: 'oak_viewer/gui/ims/outline_folder_open_white_24dp.png'
+                            center_x: self.parent.center_x
+                            center_y: self.parent.center_y
+
+    # Buttons part
+    GridLayout:
+        rows: 1
+        size_hint_y: 0.3
+        id: lower_section
+
+    Widget: # place holder
+        size_hint_y: 0.3
+
+
+
+<RecordingStartSection@GridLayout>:
+    rows: 1
+    AnchorLayout:
+        anchor: 'center'
+        FlatButton:
+            size_hint_y: None
+            height: 50
+            size_hint_x: 0.9
+            text: 'Start'
+            text_color: 1, 0, 0, 1
+            on_press: root.start_btn_press()
+
+
+<RecordingStopSection@GridLayout>:
+    rows: 2
+    Label:
+        id: rec_time_lbl
+        text: '00 : 00 : 00'
+        font_size: 30
+        halign: 'center'
+    GridLayout:
+        cols: 2
+        AnchorLayout:
+            anchor: 'center'
+            Button:
+                size_hint: (None, None)
+                size: (50, 50)
+                on_press: root.pause_btn_press()
+                background_color: 0., 0., 0., 0.
+                Image:
+                    id: pause_icon_im
+                    size_hint_x: None
+                    width: 50
+                    source: 'oak_viewer/gui/ims/outline_pause_circle_white_24dp.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+
+        AnchorLayout:
+            anchor: 'center'
+            Button:
+                size_hint: (None, None)
+                size: (50, 50)
+                on_press: root.stop_btn_press()
+                background_color: 0., 0., 0., 0.
+                Image:
+                    size_hint_x: None
+                    width: 50
+                    source: 'oak_viewer/gui/ims/outline_stop_circle_red_24dp.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y

@@ -1,0 +1,4 @@
+kivy=2.0.0=pypi_0
+numpy=1.18.2=pypi_0
+opencv-python=3.4.13.47=pypi_0
+yaml=0.2.5=h7b6447c_0

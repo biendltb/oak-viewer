@@ -1,13 +1,23 @@
 #:kivy 2.0.0
 
+#:include gui/recording_screen.kv
+#:include gui/ui_controls.kv
+
 
 <SettingPanel>:
+    cols: 1
     canvas.before:
         Color:
             rgba: 0.258, 0.258, 0.258, 1.0
         Rectangle:
             pos: self.pos
             size: self.size
+    GridLayout:
+        id: container
+        cols: 1
+
+
+<MainSettingScreen@GridLayout>:
     rows: 2
     BoxLayout:
         orientation: 'vertical'
@@ -17,6 +27,7 @@
         GridLayout:
             cols: 2
             Switch:
+                id: left_cam_switch
                 active: False
                 on_active: root.left_switch_change(self.active)
             Label:
@@ -24,6 +35,7 @@
         GridLayout:
             cols: 2
             Switch:
+                id: right_cam_switch
                 active: False
                 on_active: root.right_switch_change(self.active)
             Label:
@@ -31,11 +43,24 @@
         GridLayout:
             cols: 2
             Switch:
+                id: rgb_cam_switch
                 active: False
                 on_active: root.rgb_switch_change(self.active)
             Label:
                 text: 'RGB Camera'
-        Label:
-            text: 'TEST'
+
+        Widget: # place holder
+
+        GridLayout:
+            rows: 1
+            FlatButton:
+                size_hint: (None, None)
+                width: root.width - 40
+                height: 50
+                text: 'Recording'
+                on_press: root.recording_btn_press()
+                background_color: 0., 0., 0., 0.
+
     Widget: # place holder
         size_hint_y: 0.5
+

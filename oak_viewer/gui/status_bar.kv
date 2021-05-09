@@ -1,9 +1,23 @@
 #:kivy 2.0.0
 
 <StatusBar>:
+    rows: 2
     canvas.before:
         Color:
-            rgba: 0, 0, 1, 1
+            rgba: 0.258, 0.258, 0.258, 1.0
         Rectangle:
             pos: self.pos
             size: self.size
+    # hline
+    GridLayout:
+        cols: 1
+        size_hint_y: 0.01
+        canvas.before:
+            Color:
+                rgba: 0.380, 0.380, 0.380, 1.
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    GridLayout:
+        cols: 1
+        size_hint_y: 0.99

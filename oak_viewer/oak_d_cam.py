@@ -1,6 +1,8 @@
 import depthai as dai
-import cv2  # for testing
 from oak_viewer.types import CameraType
+
+import logging
+logger = logging.getLogger("spark_logging")
 
 
 class OakDCamera:
@@ -9,12 +11,13 @@ class OakDCamera:
         self._q_right = None
         self._q_rgb = None
         self._pipeline = dai.Pipeline()
-
         self._init_pipeline()
 
         self._is_started = False
 
     def _init_pipeline(self):
+        """ Initialize the camera pipeline
+        """
         # Define a source - two mono (grayscale) cameras
         cam_left = self._pipeline.createMonoCamera()
         cam_left.setBoardSocket(dai.CameraBoardSocket.LEFT)
@@ -44,11 +47,20 @@ class OakDCamera:
         xout_rgb.setStreamName("rgb")
         cam_rgb.preview.link(xout_rgb.input)
 
-        self._device = dai.Device(self._pipeline)
+        # check if the camera is available
+        ret, _ = dai.Device.getAnyAvailableDevice()
+        if ret is False:
+            logger.fatal('No camera available.')
+            exit(1)
+        else:
+            self._device = dai.Device(self._pipeline)
+            logger.info('Camera device is connected.')
 
     def start(self):
+        """ Start the pipeline
+        """
         self._device.startPipeline()
-        print('Camera started.')
+        logger.info('Camera started.')
         # Output queues will be used to get the grayscale frames from the outputs defined above
         self._q_left = self._device.getOutputQueue(name="left", maxSize=4, blocking=True)
         self._q_right = self._device.getOutputQueue(name="right", maxSize=4, blocking=True)
@@ -57,6 +69,7 @@ class OakDCamera:
 
     def grab(self, cam_type=CameraType.LEFT):
         """ Grab a frame from camera
+            :param cam_type: which camera of the OAK-D cam
         """
         if cam_type == CameraType.LEFT:
             frame_q = self._q_left
@@ -67,25 +80,14 @@ class OakDCamera:
         else:
             raise Exception('Type of camera is not supported')
 
+        if frame_q is None:
+            logger.error('Camera pipeline has not been started.')
+            exit(1)
+
         in_frame = frame_q.get()
         return in_frame.getCvFrame()
 
     def stop(self):
+        """ Close and stop the device
+        """
         self._device.close()
-
-
-if __name__ == '__main__':
-    cam = OakDCamera()
-    cam.start()
-
-    while True:
-        im0 = cam.grab(CameraType.LEFT)
-        im1 = cam.grab(CameraType.RIGHT)
-        rgb_im = cam.grab(CameraType.RGB)
-
-        if im0 is not None:
-            cv2.imshow("left", im0)
-
-        if cv2.waitKey(1) == ord('q'):
-            cam.stop()
-            break
